@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banca dos Animes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                dark: '#000000',
+                purple: '#6d28d9',
+                deep: '#4c1d95',
+                light: '#a78bfa',
+                surface: '#09090b',
+                border: '#27272a'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            animation: {
+              'shine': 'shine 3s linear infinite',
+            },
+            keyframes: {
+              shine: {
+                '0%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+                '100%': { backgroundPosition: '0% 50%' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #000000;
+        color: #e4e4e7;
+        font-family: 'Inter', sans-serif;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #09090b; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #4c1d95; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #6d28d9; 
+      }
+
+      /* Efeito Cromático Prateado */
+      .silver-chromatic {
+        position: relative;
+        z-index: 0;
+        border-radius: 0.5rem; /* rounded-lg */
+      }
+      
+      .silver-chromatic::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: -2px;
+        border-radius: 0.6rem;
+        padding: 2px;
+        background: linear-gradient(
+          45deg, 
+          #6b7280, 
+          #e5e7eb, 
+          #ffffff, 
+          #9ca3af, 
+          #e5e7eb, 
+          #6b7280
+        );
+        background-size: 300% 300%;
+        animation: shine 3s linear infinite;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(0,0,0,0.8);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.575.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.97.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
