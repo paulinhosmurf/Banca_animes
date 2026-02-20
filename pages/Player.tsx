@@ -135,7 +135,7 @@ export const Player: React.FC = () => {
             <video 
               controls 
               autoPlay 
-              className="w-full h-full"
+              className="absolute inset-0 w-full h-full"
               poster={episode.thumbnail_url || episode.animes?.banner_image}
             >
               <source src={finalVideoUrl} type="video/mp4" />
@@ -146,7 +146,7 @@ export const Player: React.FC = () => {
                 key={finalVideoUrl}
                 src={finalVideoUrl} 
                 title={episode.title} 
-                className="w-full h-full" 
+                className="absolute inset-0 w-full h-full" 
                 frameBorder="0"
                 allowFullScreen 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
