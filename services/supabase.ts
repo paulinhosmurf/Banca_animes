@@ -7,24 +7,41 @@ import { createClient } from '@supabase/supabase-js';
 
 // Helper to access environment variables safely across different bundlers
 const getEnv = (key: string) => {
+  let value = '';
+  
   // Vite (Standard for this project)
   // @ts-ignore
   if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env[key]) {
      // @ts-ignore
-    return import.meta.env[key];
+    value = import.meta.env[key];
   }
   // Fallback for other environments
-  if (typeof process !== 'undefined' && process.env && process.env[key]) {
-    return process.env[key];
+  else if (typeof process !== 'undefined' && process.env && process.env[key]) {
+    value = process.env[key];
   }
-  return '';
+
+  // SANITIZAÇÃO CRÍTICA: Remove aspas extras que podem vir da Vercel ou .env incorreto
+  if (value && typeof value === 'string') {
+    value = value.replace(/^"|"$/g, '').replace(/^'|'$/g, '').trim();
+  }
+
+  return value;
 };
 
 const url = getEnv('VITE_SUPABASE_URL');
 const key = getEnv('VITE_SUPABASE_ANON_KEY');
 
 // Check if configured
-export const isSupabaseConfigured = !!url && !!key;
+// Validamos também se a URL parece real (começa com http) para evitar crashes
+export const isSupabaseConfigured = !!url && !!key && url.startsWith('http');
+
+if (!isSupabaseConfigured) {
+  console.warn("⚠️ SUPABASE NÃO CONFIGURADO: Variáveis ausentes ou inválidas.");
+  console.log("URL Recebida:", url ? "Definida (Oculta)" : "Vazia");
+  console.log("Key Recebida:", key ? "Definida (Oculta)" : "Vazia");
+} else {
+  console.log("✅ Supabase configurado e sanitizado.");
+}
 
 const validUrl = isSupabaseConfigured ? url : 'https://placeholder.supabase.co';
 const validKey = isSupabaseConfigured ? key : 'placeholder-key';
