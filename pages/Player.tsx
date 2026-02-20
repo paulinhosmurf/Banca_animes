@@ -41,7 +41,11 @@ export const Player: React.FC = () => {
   };
 
   const isMp4 = (url: string) => {
-    return url.toLowerCase().includes('.mp4') || url.toLowerCase().includes('.mkv');
+    const lower = url.toLowerCase();
+    return lower.includes('.mp4') || 
+           lower.includes('.mkv') || 
+           lower.includes('mime=video/mp4') || 
+           lower.includes('googlevideo.com');
   };
 
   // Função inteligente para corrigir links comuns e extrair SRC de iframes colados
