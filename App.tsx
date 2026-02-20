@@ -7,9 +7,9 @@ import { Player } from './pages/Player';
 import { Admin } from './pages/Admin';
 import { AuthPage } from './pages/Auth';
 import { Profile } from './pages/Profile';
-import { supabase, isSupabaseConfigured } from './services/supabase';
+import { supabase, isSupabaseConfigured, getDebugInfo } from './services/supabase';
 import { Session } from '@supabase/supabase-js';
-import { ShieldAlert, Server, WifiOff } from 'lucide-react';
+import { ShieldAlert, Server, WifiOff, Activity } from 'lucide-react';
 
 // Auth Context to share session state
 export const AuthContext = React.createContext<{ session: Session | null; isAdmin: boolean; refreshSession: () => void }>({ session: null, isAdmin: false, refreshSession: () => {} });
@@ -96,6 +96,7 @@ const App: React.FC = () => {
   };
 
   if (!isSupabaseConfigured) {
+    const debug = getDebugInfo();
     return (
       <div className="min-h-screen bg-black text-gray-200 flex flex-col items-center justify-center p-6 text-center">
         <div className="bg-brand-surface border border-brand-border rounded-2xl p-8 max-w-lg w-full shadow-2xl shadow-brand-purple/10">
@@ -104,28 +105,32 @@ const App: React.FC = () => {
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">Ambiente não configurado</h1>
           <p className="text-gray-400 mb-6 text-sm leading-relaxed">
-            O site não consegue se conectar ao banco de dados porque as chaves de acesso não foram encontradas.
+            O site não consegue se conectar ao banco de dados porque as chaves de acesso não foram detectadas pelo Vite.
           </p>
           
           <div className="bg-black/50 rounded-lg p-5 text-left font-mono text-xs text-gray-300 border border-white/5 space-y-4 mb-6">
             <div>
-              <p className="text-brand-purple font-bold mb-1 flex items-center gap-2">
-                <Server size={12} /> Localhost (.env)
-              </p>
-              <div className="pl-4 opacity-70">
-                VITE_SUPABASE_URL=...<br/>
-                VITE_SUPABASE_ANON_KEY=...
-              </div>
-            </div>
-            
-            <div className="border-t border-white/10 pt-3">
-              <p className="text-white font-bold mb-1 flex items-center gap-2">
+              <p className="text-white font-bold mb-2 flex items-center gap-2 border-b border-white/10 pb-1">
                  ▲ Vercel / Deploy
               </p>
-              <p className="opacity-70 mb-2">Vá em: <strong>Settings &gt; Environment Variables</strong></p>
-              <div className="pl-4 opacity-70">
-                Adicione as mesmas chaves do seu .env e faça um <strong>Redeploy</strong>.
+              <div className="pl-0 opacity-70 space-y-1">
+                <p>1. Vá em: <strong>Settings &gt; Environment Variables</strong></p>
+                <p>2. Certifique-se que as chaves <code>VITE_SUPABASE_URL</code> e <code>VITE_SUPABASE_ANON_KEY</code> existem.</p>
+                <p>3. Faça um novo <strong>Redeploy</strong> (obrigatório).</p>
               </div>
+            </div>
+
+            <div className="border-t border-white/10 pt-3 text-[10px] text-gray-500">
+               <p className="text-brand-purple font-bold mb-1 flex items-center gap-2">
+                 <Activity size={10} /> Diagnóstico Técnico (Debug)
+               </p>
+               <div className="grid grid-cols-2 gap-2 mt-2">
+                 <div>URL Detectada: <span className={debug.urlLength > 0 ? "text-green-400" : "text-red-400"}>{debug.urlLength > 0 ? 'SIM' : 'NÃO'}</span></div>
+                 <div>Comprimento URL: {debug.urlLength} chars</div>
+                 <div>Key Detectada: <span className={debug.keyLength > 0 ? "text-green-400" : "text-red-400"}>{debug.keyLength > 0 ? 'SIM' : 'NÃO'}</span></div>
+                 <div>HTTPS Válido: <span className={debug.hasHttps ? "text-green-400" : "text-red-400"}>{debug.hasHttps ? 'SIM' : 'NÃO'}</span></div>
+               </div>
+               <p className="mt-2 text-gray-600">URL Init: {debug.urlStart}</p>
             </div>
           </div>
         </div>
